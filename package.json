@@ -1,13 +1,15 @@
 {
   "name": "nuxt-autokana",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Package for automatically convert input value to Furigana.",
   "main": "dist/main.js",
   "type": "module",
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --verbose",
     "build": "webpack",
-    "publish": "npm run test && npm run build && npm publish"
+    "publish:patch": "npm run test && npm run build && npm version patch && npm publish",
+    "publish:minor": "npm run test && npm run build && npm version minor && npm publish",
+    "publish:major": "npm run test && npm run build && npm version patch && npm major"
   },
   "repository": {
     "type": "git",

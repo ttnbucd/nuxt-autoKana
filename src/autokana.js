@@ -1,5 +1,13 @@
 import { tree } from './constants.js';
 
+function isMobile(navigator) {
+  if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 export default class AutoKana {
   constructor(target) {
     this.el = null;
@@ -14,7 +22,18 @@ export default class AutoKana {
   }
 
   setEvent() {
-    this.el.addEventListener('keydown', this.setKeyDownEvent.bind(this));
+    if(isMobile(navigator)){
+      this.el.addEventListener('input', this.setInputEvent.bind(this));
+    }else{
+      this.el.addEventListener('keydown', this.setKeyDownEvent.bind(this));
+    };
+  }
+
+  setInputEvent(e) {
+    console.log(e.data);
+    if(e.data && e.data.match(/^[ぁ-んー　]*$/)){
+      this.inputNode.push(e.data);
+    };
   }
 
   setKeyDownEvent(e) {
@@ -32,8 +51,12 @@ export default class AutoKana {
       this.inputNode = [];
       this.kanaNode = [];
     };
-    this.getKanaFromInputNode();
-    return this.kanaNode.join('');
+    if(isMobile(navigator)){
+      return this.inputNode.join('');
+    }else{
+      this.getKanaFromInputNode();
+      return this.kanaNode.join('');
+    };
   }
 
   getKanaFromInputNode() {
