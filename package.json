@@ -2,7 +2,7 @@
   "name": "nuxt-autokana",
   "version": "1.0.0",
   "description": "Package for automatically convert input value to Furigana.",
-  "main": "dist/nuxt-autoKana.js",
+  "main": "dist/main.js",
   "type": "module",
   "scripts": {
     "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --verbose",
