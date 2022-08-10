@@ -8,6 +8,12 @@ function isMobile(navigator) {
   }
 };
 
+function changeHiraganaToKatakana(str) {
+  return str.replace(/[\u3041-\u3096]/g, function(s) {
+    return String.fromCharCode(s.charCodeAt(0) + 0x60);
+  });
+}
+
 export default class AutoKana {
   constructor(target) {
     this.el = null;
@@ -30,9 +36,10 @@ export default class AutoKana {
   }
 
   setInputEvent(e) {
-    console.log(e.data);
-    if(e.data && e.data.match(/^[ぁ-んー　]*$/)){
-      this.inputNode.push(e.data);
+    if(e.data && e.data.match(/^[ぁ-んァ-ン一　]*$/)){
+      this.inputNode.push(e.data.slice(-1));
+    }else if(e.inputType === 'deleteContentBackward' && e.target.value.length <= 1){
+      this.inputNode = [];
     };
   }
 
@@ -52,7 +59,7 @@ export default class AutoKana {
       this.kanaNode = [];
     };
     if(isMobile(navigator)){
-      return this.inputNode.join('');
+      return changeHiraganaToKatakana(this.inputNode.join(''));
     }else{
       this.getKanaFromInputNode();
       return this.kanaNode.join('');
