@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>nuxt-autoKana demo</title>
+</head>
+<body>
+<div>
+  <div>
+      <label for="name">入力値</label>
+      <input name="name" id="js-name">
+  </div>
+  <div>
+      <label for="furigana">フリガナ</label>
+      <input name="furigana" id="js-furigana">
+  </div>
+  <button onclick="submit()">入力チェック</button>
+</div>
+<script src="./main.js"></script>
+<script type="text/JavaScript">
+  let autoKanaName;
+  document.addEventListener("DOMContentLoaded", function() {
+    autoKanaName = AutoKana.bind('#js-name');
+  });
+
+  function submit() {
+    const target = document.getElementById('js-furigana');
+    target.value = autoKanaName.getKanaValue();
+  }
+</script>
+</body>
+</html>
