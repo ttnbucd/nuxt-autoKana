@@ -84,7 +84,7 @@ export default class AutoKana {
 
   getKanaValue() {
     this.getKanaFromInputNode();
-    return this.kanaNode.join('');
+    return this.kanaNode.join('').normalize('NFC');
   }
 
   getKanaFromInputNode() {
