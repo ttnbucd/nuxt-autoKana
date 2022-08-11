@@ -1,6 +1,6 @@
 {
   "name": "nuxt-autokana",
-  "version": "1.0.6",
+  "version": "1.1.0",
   "description": "Package for automatically convert input value to Furigana.",
   "main": "dist/main.js",
   "type": "module",
