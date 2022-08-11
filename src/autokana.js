@@ -19,6 +19,7 @@ export default class AutoKana {
     this.el = null;
     this.inputNode = [];
     this.kanaNode = [];
+    this.prevData = null;
     this.initialize(target);
   }
 
@@ -31,52 +32,77 @@ export default class AutoKana {
     if(isMobile(navigator)){
       this.el.addEventListener('input', this.setInputEvent.bind(this));
     }else{
-      this.el.addEventListener('keydown', this.setKeyDownEvent.bind(this));
+      this.el.addEventListener('keydown', this.setKeydownEvent.bind(this));
     };
   }
 
   setInputEvent(e) {
-    if(e.data && e.data.match(/^[ぁ-んァ-ン一　]*$/)){
-      this.inputNode.push(e.data.slice(-1));
-    }else if(e.inputType === 'deleteContentBackward' && e.target.value.length <= 1){
-      this.inputNode = [];
+    if(
+      e.inputType === 'insertFromComposition' ||
+      e.inputType === 'insertCompositionText' ||
+      e.inputType === 'insertText'
+    ){
+      if(e.data.match(/^[ぁ-んァ-ン一　]*$/)){
+        const normalize = e.data.slice(-1).normalize('NFD');
+        this.inputNode.push(normalize[normalize.length - 1].charCodeAt(0));
+        this.prevData = e.data;
+      };
+    }else if(e.inputType === 'deleteContentBackward'){
+      if(e.target.value.length <= 1){
+        this.inputNode = [];
+      }else{
+        this.inputNode.pop();
+      };
+      this.kanaNode = [];
     };
   }
 
-  setKeyDownEvent(e) {
+  setKeydownEvent(e) {
     if(e.keyCode === 229 && e.code.match(/^Key/)){
       this.inputNode.push(e.key);
     };
-    if(e.keyCode === 8 && e.target.value.length <= 1){
-      this.inputNode = [];
+    if(e.keyCode === 8){
+      if(e.target.value.length <= 1){
+        this.inputNode = [];
+        this.kanaNode = [];
+      }else{
+        if(
+          this.inputNode.length > 2 &&
+          typeof tree[this.inputNode[this.inputNode.length - 2]] === 'object'
+        ){
+          this.inputNode = this.inputNode.slice(0, this.inputNode.length - 2);
+        }else{
+          this.inputNode.pop();
+        };
+        this.kanaNode = [];
+      };
+    };
+    if(e.keyCode === 13){
       this.kanaNode = [];
     };
   }
 
   getKanaValue() {
-    if(this.el.value === ''){
-      this.inputNode = [];
-      this.kanaNode = [];
-    };
-    if(isMobile(navigator)){
-      return changeHiraganaToKatakana(this.inputNode.join(''));
-    }else{
-      this.getKanaFromInputNode();
-      return this.kanaNode.join('');
-    };
+    this.getKanaFromInputNode();
+    return this.kanaNode.join('');
   }
 
   getKanaFromInputNode() {
-    let prevNode = null;
-    for(let i=0; i<this.inputNode.length; i++) {
-      const node = this.inputNode[i];
-      const val = prevNode ? prevNode[node] : tree[node];
-      if(typeof val === 'string'){
-        this.kanaNode.push(val);
-        prevNode = null;
-      }else if(typeof val === 'object'){
-        prevNode = val;
-      }
+    if(isMobile(navigator)){
+      const str = String.fromCharCode(...this.inputNode);
+      this.kanaNode = [...changeHiraganaToKatakana(str)];
+    }else{
+      let prevNode = null;
+      for(let i=0; i<this.inputNode.length; i++) {
+        const node = this.inputNode[i];
+        const val = prevNode ? prevNode[node] : tree[node];
+        if(typeof val === 'string'){
+          this.kanaNode.push(val);
+          prevNode = null;
+        }else if(typeof val === 'object'){
+          prevNode = val;
+        };
+      };
     };
   }
 }

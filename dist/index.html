@@ -1,33 +1,38 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>nuxt-autoKana demo</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>nuxt-autoKana demo</title>
 </head>
 <body>
-<div>
   <div>
-      <label for="name">入力値</label>
-      <input name="name" id="js-name">
+    <label for="name">入力値</label>
+    <input name="name" id="js-name" value="">
   </div>
   <div>
-      <label for="furigana">フリガナ</label>
-      <input name="furigana" id="js-furigana">
+    <label for="furigana">フリガナ</label>
+    <input name="furigana" id="js-furigana" value="">
   </div>
-  <button onclick="submit()">入力チェック</button>
-</div>
-<script src="./main.js"></script>
-<script type="text/JavaScript">
-  let autoKanaName;
-  document.addEventListener("DOMContentLoaded", function() {
-    autoKanaName = AutoKana.bind('#js-name');
-  });
 
-  function submit() {
-    const target = document.getElementById('js-furigana');
-    target.value = autoKanaName.getKanaValue();
-  }
-</script>
+  <script src="./main.js"></script>
+  <script type="text/JavaScript">
+    let autoKanaName;
+    document.addEventListener("DOMContentLoaded", function() {
+      autoKanaName = AutoKana.bind('#js-name');
+    });
+
+    function getKana() {
+      const target = document.getElementById('js-furigana');
+      target.value = autoKanaName.getKanaValue();
+
+      const input_node = document.getElementById('js-inputNode');
+      input_node.innerHTML = autoKanaName.inputNode;
+      const kana_node = document.getElementById('js-kanaNode');
+      kana_node.innerHTML = autoKanaName.kanaNode;
+    };
+
+    document.getElementById('js-name').addEventListener('change', getKana);
+  </script>
 </body>
 </html>
