@@ -77,5 +77,5 @@ test('input event', () => {
 
   target.value = '山田太郎';
 
-  expect(autokana.getKanaValue()).toBe('ヤマダタロウ');
+  expect(autokana.getKanaValue()).toBe('ヤマダタロウ');
 });
