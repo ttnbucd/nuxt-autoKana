@@ -1,5 +1,5 @@
 # nuxt-autokana
-Nuxt.jsアプリで利用しやすいフォームに入力された値のふりがなを自動取得するパッケージ
+Nuxt.jsで利用しやすいように開発された、フォームに入力された値のふりがなを自動取得するパッケージ
 
 ## 利用方法
 - [インストール](#インストール)
@@ -8,8 +8,6 @@ Nuxt.jsアプリで利用しやすいフォームに入力された値のふり�
 - [利用箇所で呼び出し](#利用箇所で呼び出し)
 
 ### インストール
-コマンドラインにてインストール
-
 ```sh
 npm i nuxt-autokana
 ```
@@ -38,7 +36,7 @@ plugins: [
 ```
 
 ### 利用箇所で呼び出し
-利用するpage.vueやcomponent.vueで以下のように利用できます。
+利用するpage.vueやcomponent.vueで以下のように呼び出して利用
 
 ```js
 <template>
@@ -67,12 +65,14 @@ export default {
   },
 
   mounted() {
-    autoKana = $nuxt.context.$autokana.bind('#name'); // セレクタで指定
+    // ふりがなを自動取得したい対象要素をセレクタで指定
+    autoKana = this.$autokana.bind('#name');
   },
 
   methods: {
     getKana() {
-      this.kana = autoKana.getKanaValue(); // getKanaValue()で呼び出し
+      // getKanaValue()で別の要素に自動取得したふりがなを呼び出し
+      this.kana = autoKana.getKanaValue();
     }
   }
 }
