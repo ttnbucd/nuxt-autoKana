@@ -38,23 +38,26 @@ plugins: [
 ### 利用箇所で呼び出し
 利用するpage.vueやcomponent.vueで以下のように呼び出して利用
 
-```js
+```HTML
 <template>
-  <input type="text"
-    id="name"
-    name="name"
-    v-model="name"
-    @change="getKana()"
-    placeholder="山田太郎"
-  />
-  <input type="text"
-    id="kana"
-    name="kana"
-    v-model="kana"
-    placeholder="ヤマダタロウ"
-  />
+  <div>
+    <input type="text"
+      id="name"
+      name="name"
+      v-model="name"
+      @change="getKana()"
+      placeholder="山田太郎"
+    />
+    <input type="text"
+      id="kana"
+      name="kana"
+      v-model="kana"
+      placeholder="ヤマダタロウ"
+    />
+  </div>
 </template>
 
+<script>
 let autoKana;
 export default {
   data() {
@@ -76,4 +79,5 @@ export default {
     }
   }
 }
+</script>
 ```
