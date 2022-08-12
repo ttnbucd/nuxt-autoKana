@@ -59,7 +59,7 @@ export default class AutoKana {
 
   setKeydownEvent(e) {
     if(e.keyCode === 229 && e.code.match(/^Key/)){
-      this.inputNode.push(e.key);
+      this.inputNode.push(e.code.replace(/Key/, '').toLowerCase());
     };
     if(e.keyCode === 8){
       if(e.target.value.length <= 1){
@@ -82,11 +82,6 @@ export default class AutoKana {
     };
   }
 
-  getKanaValue() {
-    this.getKanaFromInputNode();
-    return this.kanaNode.join('').normalize('NFC');
-  }
-
   getKanaFromInputNode() {
     if(isMobile(navigator)){
       const str = String.fromCharCode(...this.inputNode);
@@ -104,5 +99,10 @@ export default class AutoKana {
         };
       };
     };
+  }
+
+  getKanaValue() {
+    this.getKanaFromInputNode();
+    return this.kanaNode.join('').normalize('NFC');
   }
 }

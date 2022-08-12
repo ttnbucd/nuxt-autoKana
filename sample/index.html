@@ -15,7 +15,7 @@
     <input name="furigana" id="js-furigana" value="">
   </div>
 
-  <script src="./main.js"></script>
+  <script src="../dist/main.js"></script>
   <script type="text/JavaScript">
     let autoKanaName;
     document.addEventListener("DOMContentLoaded", function() {
@@ -25,11 +25,6 @@
     function getKana() {
       const target = document.getElementById('js-furigana');
       target.value = autoKanaName.getKanaValue();
-
-      const input_node = document.getElementById('js-inputNode');
-      input_node.innerHTML = autoKanaName.inputNode;
-      const kana_node = document.getElementById('js-kanaNode');
-      kana_node.innerHTML = autoKanaName.kanaNode;
     };
 
     document.getElementById('js-name').addEventListener('change', getKana);

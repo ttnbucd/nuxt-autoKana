@@ -1,0 +1,5 @@
+sample/
+node_modules/
+__test__/
+coverage/
+jest.config.mjs

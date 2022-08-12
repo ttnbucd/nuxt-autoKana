@@ -72,10 +72,37 @@ test('input event', () => {
   inputEvents.forEach(e => {
     autokana.setInputEvent(e)
   });
-
-  console.log(autokana.inputNode);
-
+  
   target.value = '山田太郎';
 
   expect(autokana.getKanaValue()).toBe('ヤマダタロウ');
+});
+
+test('keydown event keyCode13', () => {
+  document.body.innerHTML = `
+    <input name="name" id="name" value="">
+    <input name="furigana" id="furigana" value="">
+  `;
+  const autokana = new AutoKana('#name');
+  const target = document.getElementById('name');
+
+  const keyItems = [
+    { keyCode: 229, key: 'y', code: 'KeyY' },
+    { keyCode: 229, key: 'a', code: 'KeyA' },
+    { keyCode: 229, key: 'm', code: 'KeyM' },
+    { keyCode: 229, key: 'a', code: 'KeyA' },
+    { keyCode: 229, key: 'd', code: 'KeyD' },
+    { keyCode: 229, key: 'a', code: 'KeyA' },
+    { keyCode: 13 }
+  ];
+
+  const keyEvents = keyItems.map(item => item = new KeyboardEvent('keydown', item));
+
+  keyEvents.forEach(e => {
+    autokana.setKeydownEvent(e)
+  });
+
+  target.value = '山田太郎';
+
+  expect(autokana.kanaNode.length).toBe(0);
 });
